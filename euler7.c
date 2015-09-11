@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #define START_SIZE 1
 #define RESIZE_FACTOR 2
-#define LIMIT 1000000
+#define LIMIT 10001
 
 void resize(int** array, int* size);
 
