@@ -1,27 +1,26 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define START_SIZE 12
+#define START_SIZE 256
 #define RESIZE_FACTOR 2
 #define LIMIT 10001
-typedef unsigned intT;
+#define INVALID 1
+typedef unsigned long long indexT;
 
-void resize(intT** array, intT* size);
+void resize(char** array, indexT* size);
 
 int main() {
-  intT size = START_SIZE;
-  intT* primeTable = malloc(sizeof(intT) * size);
-  for (intT i = 2; i < size; i++)
-    primeTable[i] = i;
+  indexT size = START_SIZE;
+  char* primeTable = calloc(size, sizeof(char) * size);
 
-  intT p;
-  for (intT foundPrimes = 0; foundPrimes < LIMIT; p = 2) {
+  indexT p;
+  for (indexT foundPrimes = 0; foundPrimes < LIMIT; p = 2) {
     while (p <= size) {
-      for (intT marker = 2 * p; marker < size; marker += p)
-        primeTable[marker] = 0;
-      while (++p < size && primeTable[p] == 0);
+      for (indexT marker = 2 * p; marker < size; marker += p)
+        primeTable[marker] = INVALID;
+      while (++p < size && primeTable[p] == INVALID);
     }
-    for (intT i = 2, foundPrimes = 0; i < size; i++)
-      if (primeTable[i] != 0)
+    for (indexT i = 2, foundPrimes = 0; i < size; i++)
+      if (primeTable[i] != INVALID)
         if (++foundPrimes == LIMIT) {
           printf("%d\n", i);
           free(primeTable);
@@ -31,16 +30,13 @@ int main() {
   }
 }
 
-void resize(intT** array, intT* size) {
-  intT* oldArray = *array;
-  intT oldSize = *size;
-  intT newSize = oldSize * RESIZE_FACTOR;
-  intT* newArray = malloc(sizeof(intT) * newSize);
-  for (intT i = 2; i < newSize; i++)
-    if (i < oldSize)
-      newArray[i] = oldArray[i];
-    else
-      newArray[i] = i;
+void resize(char** array, indexT* size) {
+  char* oldArray = *array;
+  indexT oldSize = *size;
+  indexT newSize = oldSize * RESIZE_FACTOR;
+  char* newArray = malloc(sizeof(char) * newSize);
+  for (indexT i = 2; i < oldSize; i++)
+    newArray[i] = oldArray[i];
   
   free(oldArray);
   *array = newArray;
