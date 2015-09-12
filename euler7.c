@@ -12,7 +12,7 @@ int main() {
   indexT size = START_SIZE;
   char* primeTable = calloc(size, sizeof(char) * size);
 
-  indexT p;
+  indexT p = 2;
   for (indexT foundPrimes = 0; foundPrimes < LIMIT; p = 2) {
     while (p <= size) {
       for (indexT marker = 2 * p; marker < size; marker += p)
